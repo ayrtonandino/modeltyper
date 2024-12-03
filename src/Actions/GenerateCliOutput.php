@@ -130,7 +130,7 @@ class GenerateCliOutput
 
             if ($fillables) {
                 $fillableAttributes = $reflectionModel->newInstanceWithoutConstructor()->getFillable();
-                $fillablesUnion = implode('|', array_map(fn ($fillableAttribute) => "'$fillableAttribute'", $fillableAttributes));
+                $fillablesUnion = implode(' | ', array_map(fn ($fillableAttribute) => "'$fillableAttribute'", $fillableAttributes));
                 $entry .= "{$this->indent}export type {$name}{$fillableSuffix} = Pick<$name, $fillablesUnion>\n";
             }
 

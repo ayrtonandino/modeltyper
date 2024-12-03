@@ -104,7 +104,7 @@ class WriteColumnAttribute
         }
 
         if ($attribute['nullable']) {
-            $type .= '|null';
+            $type .= ' | null';
         }
 
         if ((isset($attribute['hidden']) && $attribute['hidden']) || ($optionalNullables && $attribute['nullable'])) {

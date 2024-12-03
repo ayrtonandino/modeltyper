@@ -219,7 +219,7 @@ You can also add mappings for your [Custom Casts](https://laravel.com/docs/11.x/
 
 ```php
 'custom_mappings' => [
-    'App\Casts\YourCustomCast' => 'string|null',
+    'App\Casts\YourCustomCast' => 'string | null',
     'binary' => 'Blob',
     'bool' => 'boolean',
     'point' => 'CustomPointInterface',

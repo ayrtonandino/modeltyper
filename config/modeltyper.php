@@ -173,7 +173,7 @@ return [
     | custom casts.
     |
     | Example:
-    | 'App\Casts\YourCustomCast' => 'string|null',
+    | 'App\Casts\YourCustomCast' => 'string | null',
     | 'binary' => 'Blob',
     | 'bool' => 'boolean',
     | 'point' => 'CustomPointInterface',

@@ -13,6 +13,10 @@
 
 Model Typer is a powerful tool designed for developers working with Laravel and TypeScript. Its primary purpose is to simplify the generation of TypeScript interfaces from Laravel models, enhancing type safety and consistency in your applications.
 
+## Upgrade Guide
+
+Please read the upgrade guide [here](https://github.com/fumeapp/modeltyper/UPGRADE.md)
+
 ## Installation
 
 Starting support is for Laravel >=v11.33.0 and PHP v8.2+

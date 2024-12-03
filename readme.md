@@ -1,11 +1,4 @@
-<p align="center">
-  <a href="https://laravel.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" width="92" height="92" /></a>
-  <a href="https://www.typescriptlang.org/"><img src="https://miro.medium.com/max/816/1*mn6bOs7s6Qbao15PMNRyOA.png" width="92" height="92" /></a>
-</p>
-
 # Model Typer
-
-Generate TypeScript interfaces from Laravel Models
 
 [![Github actions](https://github.com/fumeapp/modeltyper/actions/workflows/phpstan.yml/badge.svg)](https://packagist.org/packages/fumeapp/modeltyper)
 [![Latest Stable Version](https://poser.pugx.org/fumeapp/modeltyper/v)](https://packagist.org/packages/fumeapp/modeltyper)
@@ -13,11 +6,18 @@ Generate TypeScript interfaces from Laravel Models
 [![License](https://poser.pugx.org/fumeapp/modeltyper/license)](https://choosealicense.com/licenses/mit/)
 [![PHP Version Require](https://poser.pugx.org/fumeapp/modeltyper/require/php)](https://packagist.org/packages/fumeapp/modeltyper)
 
+<p align="center">
+  <a href="https://laravel.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" width="92" height="92" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://miro.medium.com/max/816/1*mn6bOs7s6Qbao15PMNRyOA.png" width="92" height="92" /></a>
+</p>
+
+Model Typer is a powerful tool designed for developers working with Laravel and TypeScript. Its primary purpose is to simplify the generation of TypeScript interfaces from Laravel models, enhancing type safety and consistency in your applications.
+
 ## Installation
 
 Starting support is for Laravel >=v11.33.0 and PHP v8.2+
 
-> [!NOTE]
+> [!IMPORTANT]
 > For Laravel >=10.43.0 || <11.33.0, use v2 instead
 
 Require this package with composer using the following command:
@@ -34,11 +34,13 @@ php artisan vendor:publish --provider="FumeApp\ModelTyper\ModelTyperServiceProvi
 
 ## Usage
 
+You can simply run the following command to generate TypeScript interfaces:
+
 ```bash
 php artisan model:typer
 ```
 
-will output
+The output is an accurate, type-safe representation of Laravel models in TypeScript, such as:
 
 ```ts
 export interface User {
@@ -78,6 +80,15 @@ export type Teams = Array<Team>;
 This command will go through all of your models and make [TypeScript Interfaces](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#interfaces) based on the database columns, mutators, and relationships.
 
 You can then pipe the output into your preferred `???.d.ts`, or set the [optional argument](#optional-arguments) `output-file` to generate it
+
+> [!TIP]
+> To view the current mappings that are being used, use the following command:
+>
+> ```bash
+> php artisan model:typer-mappings
+> ```
+>
+> These mappings can be [extended or overridden](#override-default-mappings--add-new-ones) in the config
 
 ### Requirements
 

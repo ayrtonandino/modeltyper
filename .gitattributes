@@ -14,5 +14,5 @@ phpstan.neon.dist export-ignore
 phpunit.xml export-ignore
 pint.json export-ignore
 readme.md export-ignore
-test/ export-ignore
+tests/ export-ignore
 UPGRADE.md export-ignore

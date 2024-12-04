@@ -2,7 +2,7 @@
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-    bootstrap="test/bootstrap.php"
+    bootstrap="tests/bootstrap.php"
     cacheDirectory=".phpunit.cache"
     executionOrder="depends,defects"
     requireCoverageMetadata="false"
@@ -13,10 +13,10 @@
 >
   <testsuites>
     <testsuite name="unit">
-      <directory>test/Tests/Unit</directory>
+      <directory>tests/Unit</directory>
     </testsuite>
     <testsuite name="feature">
-      <directory>test/Tests/Feature</directory>
+      <directory>tests/Feature</directory>
     </testsuite>
   </testsuites>
   <coverage/>

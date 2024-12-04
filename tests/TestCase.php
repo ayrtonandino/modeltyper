@@ -27,7 +27,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     public static function applicationBasePath(): string
     {
-        return package_path('test/laravel-skeleton');
+        return package_path('tests/skeleton');
     }
 
     protected function defineEnvironment($app): void

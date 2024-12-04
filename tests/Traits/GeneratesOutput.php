@@ -8,9 +8,9 @@ trait GeneratesOutput
 {
     use GetsFilesContent;
 
-    public function getOutputPath(?string $appends = null): string
+    private function getOutputPath(?string $appends = null): string
     {
-        $path = package_path('test/output');
+        $path = package_path('tests/output');
 
         if ($appends) {
             $path .= str_starts_with($appends, '/') ? $appends : "/$appends";
@@ -19,12 +19,12 @@ trait GeneratesOutput
         return $path;
     }
 
-    public function getGeneratedFileContents(string $path, bool $addEOL = false): string
+    private function getGeneratedFileContents(string $path, bool $addEOL = false): string
     {
         return $this->getFileContents($this->getOutputPath($path), $addEOL);
     }
 
-    public function deleteOutput()
+    private function deleteOutput()
     {
         $this->removeDirectoryContents($this->getOutputPath(), ['.gitignore']);
     }

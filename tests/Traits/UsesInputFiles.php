@@ -8,9 +8,9 @@ trait UsesInputFiles
 {
     use GetsFilesContent;
 
-    public function getInputPath(?string $appends = null): string
+    private function getInputPath(?string $appends = null): string
     {
-        $path = package_path('test/input');
+        $path = package_path('tests/input');
 
         if ($appends) {
             $path .= str_starts_with($appends, '/') ? $appends : "/$appends";
@@ -19,12 +19,12 @@ trait UsesInputFiles
         return $path;
     }
 
-    public function getInputFileContents(string $path, bool $addEOL = false): string
+    private function getInputFileContents(string $path, bool $addEOL = false): string
     {
         return $this->getFileContents($this->getInputPath($path), $addEOL);
     }
 
-    public function getExpectedContent(string $path, bool $addEOL = false): string
+    private function getExpectedContent(string $path, bool $addEOL = false): string
     {
         return $this->getInputFileContents("expectations/$path", $addEOL);
     }

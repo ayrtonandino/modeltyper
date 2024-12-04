@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 
 trait GetsFilesContent
 {
-    public function normalizeLineEndings(string $string): string
+    private function normalizeLineEndings(string $string): string
     {
         if (PHP_OS_FAMILY === 'Windows') {
             return Str::of($string)
@@ -18,7 +18,7 @@ trait GetsFilesContent
         return $string;
     }
 
-    public function getFileContents(string $path, bool $addEOL = false): string
+    private function getFileContents(string $path, bool $addEOL = false): string
     {
         $contents = (string) file_get_contents($path);
 

@@ -2,15 +2,15 @@
 
 namespace FumeApp\ModelTyper\Actions;
 
+use Composer\ClassMapGenerator\ClassMapGenerator;
 use FumeApp\ModelTyper\Traits\ClassBaseName;
 use FumeApp\ModelTyper\Traits\ModelRefClass;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionException;
-use Symfony\Component\Finder\SplFileInfo;
+use SplFileInfo;
 
 class BuildModelDetails
 {
@@ -89,12 +89,16 @@ class BuildModelDetails
      */
     private function getModelDetails(SplFileInfo $modelFile): ?array
     {
-        $modelFile = Str::of(app()->getNamespace())
-            ->append($modelFile->getRelativePathname())
-            ->replace('.php', '')
-            ->toString();
+        // the file technically could define more than one class
+        // what ideally should be done here is making getModelDetails return an array of arrays
+        // but since laravel doesn't support it we don't have to
+        $class = ClassMapGenerator::createMap([$modelFile]);
+        if (count($class) !== 1) {
+            return [];
+        }
+        $class = array_keys($class)[0];
 
-        return app(RunModelInspector::class)($modelFile);
+        return app(RunModelInspector::class)($class);
     }
 
     private function overrideCollectionWithInterfaces(Collection $columns, Collection $interfaces): Collection

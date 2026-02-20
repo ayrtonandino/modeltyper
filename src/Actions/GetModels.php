@@ -6,7 +6,6 @@ use Composer\ClassMapGenerator\ClassMapGenerator;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use ReflectionClass;
 use SplFileInfo;
 
 class GetModels
@@ -16,32 +15,39 @@ class GetModels
      *
      * @param  list<string>|null  $includedModels
      * @param  list<string>|null  $excludedModels
+     * @param  list<string>|null  $additionalPaths
      * @return Collection<int, SplFileInfo>
      */
     public function __invoke(?string $model = null, ?array $includedModels = null, ?array $excludedModels = null, ?array $additionalPaths = null): Collection
     {
         $modelShortName = $this->resolveModelFilename($model);
 
-        if (! empty($includedModels)) {
-            $includedModels = array_map(fn ($includedModel) => $this->resolveModelFilename($includedModel), $includedModels);
+        if (filled($includedModels)) {
+            $includedModels = array_map(fn(string $includedModel): string => $this->resolveModelFilename($includedModel), $includedModels);
         }
 
-        if (! empty($excludedModels)) {
-            $excludedModels = array_map(fn ($excludedModel) => $this->resolveModelFilename($excludedModel), $excludedModels);
+        if (filled($excludedModels)) {
+            $excludedModels = array_map(fn(string $excludedModel): string => $this->resolveModelFilename($excludedModel), $excludedModels);
         }
 
-        return collect($additionalPaths)->add(app_path())->map(
-            fn ($file) => collect(ClassMapGenerator::createMap($file))
-        )->collapseWithKeys()
+        return collect([app_path()])
+            ->when($additionalPaths, fn(Collection $colection, array $paths): Collection => $colection->merge($paths))
+            ->map(fn(string $path): array => ClassMapGenerator::createMap($path))
+            ->collapseWithKeys()
             ->flip()
-            ->filter(fn ($class) => class_exists($class) && (new ReflectionClass($class))->isSubclassOf(EloquentModel::class))
-            ->map(fn ($fqn) => $this->resolveModelFilename($fqn))
-            ->when($includedModels, fn ($files, $includedModels) => $files->filter(fn (string $class) => in_array($class, $includedModels)))
-            ->when($excludedModels, fn ($files, $excludedModels) => $files->filter(fn (string $class) => ! in_array($class, $excludedModels)))
-            ->when($modelShortName !== false, fn ($files) => $files->filter(fn (string $class) => $class === $modelShortName))
-            ->keys()->map(
-                fn ($file) => new SplFileInfo($file)
-            )->values();
+            ->filter(fn(string $class): bool => is_subclass_of($class, EloquentModel::class, true))
+            ->map(fn(string $fqn): string|false => $this->resolveModelFilename($fqn))
+            ->when($includedModels, fn(Collection $files, array $includedModels): Collection => $files->filter(
+                fn(string $class): bool => in_array($class, $includedModels)
+            ))
+            ->when($excludedModels, fn(Collection $files, array $excludedModels): Collection => $files->filter(
+                fn(string $class): bool => ! in_array($class, $excludedModels)
+            ))
+            ->when($modelShortName, fn($files) => $files->filter(fn(string $class) => $class === $modelShortName))
+            ->keys()
+            ->sort()
+            ->map(fn(string $class): SplFileInfo => new SplFileInfo($class))
+            ->values();
     }
 
     private function resolveModelFilename(?string $model): string|false
